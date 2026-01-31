@@ -22,6 +22,8 @@ document.getElementById("breakDown").appendChild(document.createElement('h2')).i
 
 document.getElementById("transactionForm").addEventListener("submit", (e) => {
   e.preventDefault();
+  const submitBtn = document.getElementById("submitBtn");
+  
   const loader = document.getElementById("loader");
   const income = parseFloat(document.getElementById("income").value);
   const description = document.getElementById("description").value;
@@ -38,21 +40,25 @@ document.getElementById("transactionForm").addEventListener("submit", (e) => {
 
   if (isNaN(price) || price <= 0 || currIncome - price < 0) {
     document.getElementById("priceError").textContent = "Please enter a valid expense price.";
+    currIncome -= income;
     return;
   }
   document.getElementById("priceError").textContent = "";
   if (category === "select") {
     document.getElementById("categoryError").textContent = "Please select a valid category.";
+    currIncome -= income;
     return;
   }
   document.getElementById("categoryError").textContent = "";
 
   //Loader Hidden
+  submitBtn.disabled = true;
   loader.classList.remove("hidden");
 
   //After 2 seconds loader goes off
   setTimeout(() => {
     loader.classList.add("hidden");
+    submitBtn.disabled = false;
   },2000); 
 
   totalprice += price;
@@ -69,7 +75,8 @@ document.getElementById("transactionForm").addEventListener("submit", (e) => {
   categoryExpense.push({ id: transaction.id, category: transaction.category, price: transaction.price });
   updateDashboard(expenses);
 
-
+  //Below line beacuse after adding new expense we need to maintain the current filter
+  filterDashboard({ target: { value: document.getElementById("filterChange").value } });
 });
 
 
@@ -79,7 +86,7 @@ const updateDashboard = (expenseArray) => {
   }
 
   document.querySelector('tbody').innerHTML = '';
-  expenseArray.forEach((expense, index) => {
+  expenseArray.forEach((expense) => {
     const row = document.createElement('tr');
     row.innerHTML = `
       
@@ -123,6 +130,7 @@ const updateDashboard = (expenseArray) => {
     `;
     document.getElementById("breakDown").appendChild(div);
   });
+  
 
 
 }
@@ -139,16 +147,25 @@ const deleteById = (id) => {
   }
 }
 
-document.getElementById("filterChange").addEventListener("change", (e) => {
-  if (e.target.value === "date") {
-    const sortedByDate = [...expenses].sort((a, b) => new Date(a.date) - new Date(b.date));
+function filterDashboard(e){
+
+   if (e.target.value === "date") {
+    const sortedByDate = [...expenses].sort((a, b) => new Date(b.date) - new Date(a.date));
     updateDashboard(sortedByDate);
   } else if (e.target.value === "amount") {
-    const sortedByAmount = [...expenses].sort((a, b) => a.price - b.price);
+    const sortedByAmount = [...expenses].sort((a, b) => b.price - a.price);
     updateDashboard(sortedByAmount);
   } else {
     updateDashboard(expenses);
   }
+}
+
+
+
+
+
+document.getElementById("filterChange").addEventListener("change", (e) => {
+ filterDashboard(e);
 });
 
 function calculateCategoryTotals() {
