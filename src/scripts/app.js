@@ -54,7 +54,7 @@ document.getElementById("transactionForm").addEventListener("submit", (e) => {
   setTimeout(() => {
     loader.classList.add("hidden");
   },2000); 
-  
+
   totalprice += price;
   currIncome -= price;
   document.getElementById("income").value = '';
@@ -134,9 +134,7 @@ const deleteById = (id) => {
     currIncome += deletedExpense.price;
     totalprice -= deletedExpense.price;
     expenses.splice(index, 1);
-    console.log("Before---->", categoryExpense.length);
     categoryExpense.splice(index, 1);
-    console.log("After---->", categoryExpense.length);
     updateDashboard(expenses);
   }
 }
@@ -159,8 +157,6 @@ function calculateCategoryTotals() {
   acc[category] = (acc[category] || 0) + price;
   return acc;
 }, {});
-  console.log(categoryTotals);
-  
   return categoryTotals;
 }
 function calculateCategoryArray(categoryTotals) {
