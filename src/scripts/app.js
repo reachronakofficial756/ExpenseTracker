@@ -46,10 +46,15 @@ document.getElementById("transactionForm").addEventListener("submit", (e) => {
     return;
   }
   document.getElementById("categoryError").textContent = "";
+
+  //Loader Hidden
   loader.classList.remove("hidden");
+
+  //After 2 seconds loader goes off
   setTimeout(() => {
     loader.classList.add("hidden");
-  },3000); 
+  },2000); 
+  
   totalprice += price;
   currIncome -= price;
   document.getElementById("income").value = '';
