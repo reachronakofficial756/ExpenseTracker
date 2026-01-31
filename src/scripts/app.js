@@ -22,6 +22,7 @@ document.getElementById("breakDown").appendChild(document.createElement('h2')).i
 
 document.getElementById("transactionForm").addEventListener("submit", (e) => {
   e.preventDefault();
+  const loader = document.getElementById("loader");
   const income = parseFloat(document.getElementById("income").value);
   const description = document.getElementById("description").value;
   const price = parseFloat(document.getElementById("price").value);
@@ -45,6 +46,10 @@ document.getElementById("transactionForm").addEventListener("submit", (e) => {
     return;
   }
   document.getElementById("categoryError").textContent = "";
+  loader.classList.remove("hidden");
+  setTimeout(() => {
+    loader.classList.add("hidden");
+  },3000); 
   totalprice += price;
   currIncome -= price;
   document.getElementById("income").value = '';
