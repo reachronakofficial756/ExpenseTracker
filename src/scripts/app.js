@@ -15,6 +15,7 @@ let expenses = [];
 let currIncome = 0;
 let totalprice = 0;
 let categoryExpense = [];
+document.getElementById("breakDown").appendChild(document.createElement('h2')).innerHTML = `<h2 class="text-xl font-semibold text-gray-900">BreakDown</h2>`;
 
 
 
@@ -100,8 +101,8 @@ const updateDashboard = (expenseArray) => {
   let categoryTotals = calculateCategoryTotals();
   //This is for turing object into array of objects
   let categoryTotalsArray = calculateCategoryArray(categoryTotals);
-
-
+  document.getElementById("breakDown").innerHTML = ``;
+  document.getElementById("breakDown").appendChild(document.createElement('h2')).innerHTML = `<h2 class="text-xl font-semibold text-gray-900">BreakDown</h2>`;
   categoryTotalsArray.forEach(item => {
     const div = document.createElement('div');
     div.innerHTML = `
